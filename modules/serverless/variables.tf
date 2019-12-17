@@ -28,6 +28,11 @@ variable "account_id" {
   description = "AWS account id."
 }
 
+variable "user_profile" {
+  type        = string
+  description = "AWS user profile that used to create the resources."
+}
+
 variable "region" {
   type = string
   description = "AWS region."

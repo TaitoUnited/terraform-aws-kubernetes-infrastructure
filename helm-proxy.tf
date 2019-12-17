@@ -15,7 +15,7 @@
  */
 
 resource "helm_release" "postgres_proxy" {
-  depends_on = [module.kubernetes]
+  depends_on = [module.kubernetes, helm_release.letsencrypt_issuer]
 
   count      = var.helm_enabled ? length(var.postgres_instances) : 0
   name       = var.postgres_instances[count.index]
@@ -27,17 +27,17 @@ resource "helm_release" "postgres_proxy" {
 
   set {
     name  = "tunnel.host"
-    value = module.postgres.this_db_instance_endpoint
+    value = split(":", module.postgres.this_db_instance_endpoint)[0]
   }
 
   set {
     name  = "tunnel.port"
-    value = "5432"
+    value = split(":", module.postgres.this_db_instance_endpoint)[1]
   }
 }
 
 resource "helm_release" "mysql_proxy" {
-  depends_on = [module.kubernetes]
+  depends_on = [module.kubernetes, helm_release.postgres_proxy]
 
   count      = var.helm_enabled ? length(var.mysql_instances) : 0
   name       = var.mysql_instances[count.index]
@@ -49,11 +49,11 @@ resource "helm_release" "mysql_proxy" {
 
   set {
     name  = "tunnel.host"
-    value = module.mysql.this_db_instance_endpoint
+    value = split(":", module.mysql.this_db_instance_endpoint)[0]
   }
 
   set {
     name  = "tunnel.port"
-    value = "3306"
+    value = split(":", module.mysql.this_db_instance_endpoint)[1]
   }
 }

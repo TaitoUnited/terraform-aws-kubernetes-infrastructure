@@ -17,10 +17,13 @@
 /* Provider */
 
 provider "aws" {
-  region = var.region
+  region  = var.region
+  profile = var.user_profile
 }
 
 provider "helm" {
+  install_tiller = false
+  max_history    = 20
 }
 
 /* Common data */

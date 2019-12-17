@@ -15,7 +15,7 @@
  */
 
 resource "helm_release" "nginx_ingress" {
-  depends_on = [module.kubernetes]
+  depends_on = [module.kubernetes, helm_release.fluentd_cloudwatch]
 
   count = var.helm_enabled ? length(var.helm_nginx_ingress_classes) : 0
 
@@ -76,7 +76,7 @@ resource "helm_release" "nginx_ingress" {
 }
 
 resource "helm_release" "cert_manager_crd" {
-  depends_on = [module.kubernetes]
+  depends_on = [module.kubernetes, helm_release.nginx_ingress]
 
   count = var.helm_enabled ? 1 : 0
 
@@ -87,8 +87,20 @@ resource "helm_release" "cert_manager_crd" {
   version    = "0.11.0"
 }
 
+resource "null_resource" "cert_manager_crd_wait" {
+  depends_on = [helm_release.cert_manager_crd]
+
+  triggers = {
+    helm_enabled = var.helm_enabled
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 30"
+  }
+}
+
 resource "helm_release" "cert_manager" {
-  depends_on = [module.kubernetes, helm_release.cert_manager_crd]
+  depends_on = [module.kubernetes, null_resource.cert_manager_crd_wait]
 
   count      = var.helm_enabled ? 1 : 0
 

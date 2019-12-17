@@ -45,7 +45,7 @@ resource "helm_release" "metrics_server" {
 }
 
 resource "helm_release" "fluentd_cloudwatch" {
-  depends_on = [module.kubernetes]
+  depends_on = [module.kubernetes, helm_release.metrics_server]
 
   count      = var.helm_enabled ? 1 : 0
 
