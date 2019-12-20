@@ -29,6 +29,12 @@ provider "helm" {
 /* Common data */
 
 locals {
+  metrics_server_version     = "2.8.8"
+  fluentd_cloudwatch_version = "0.11.1"
+  nginx_ingress_version      = "1.26.2"
+  cert_manager_version       = "0.11.0"
+  socat_tunneler_version     = "0.1.0"
+
   tags = {
     name        = var.name
     workspace   = terraform.workspace

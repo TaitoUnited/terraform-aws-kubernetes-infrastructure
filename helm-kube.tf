@@ -23,7 +23,7 @@ resource "helm_release" "metrics_server" {
   namespace  = "kube-system"
   repository = "https://kubernetes-charts.storage.googleapis.com/"
   chart      = "metrics-server"
-  version    = "2.8.8"
+  version    = local.metrics_server_version
   wait       = false
 
   /* https://github.com/kubernetes-incubator/metrics-server/issues/157#issuecomment-544875105 */
@@ -53,7 +53,7 @@ resource "helm_release" "fluentd_cloudwatch" {
   namespace  = "kube-system"
   repository = "https://kubernetes-charts-incubator.storage.googleapis.com/"
   chart      = "fluentd-cloudwatch"
-  version    = "0.11.1"
+  version    = local.fluentd_cloudwatch_version
   wait       = false
 
   set {
