@@ -105,6 +105,12 @@ variable "kubernetes_name" {
   description = "Name for the Kubernetes cluster."
 }
 
+variable "kubernetes_context" {
+  type        = string
+  default     = ""
+  description = "Kubernetes context. Value of var.name is used by default."
+}
+
 variable "kubernetes_machine_type" {
   type        = string
   default     = "n1-standard-1"
