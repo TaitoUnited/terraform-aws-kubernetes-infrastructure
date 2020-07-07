@@ -17,7 +17,7 @@
 module "ssm-bastion" {
   source            = "JamesWoolfenden/ssm-bastion/aws"
   version           ="0.1.10"
-  allowed_ips       = join(" ", var.bastion_authorized_networks)
+  allowed_ips       = join(" ", var.authorized_networks)
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
   instance_type     = "t2.micro"

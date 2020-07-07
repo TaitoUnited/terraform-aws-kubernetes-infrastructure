@@ -53,6 +53,11 @@ variable "email" {
   description = "Email address for DevOps support."
 }
 
+variable "authorized_networks" {
+  type        = list(string)
+  description = "CIDRs that are authorized to access the bastion host."
+}
+
 variable "archive_day_limit" {
   type = number
   description = "Defines how long storage bucket files should be kept in archive after they have been deleted."

@@ -53,7 +53,7 @@ variable "email" {
   description = "Email address for DevOps support."
 }
 
-variable "bastion_authorized_networks" {
+variable "authorized_networks" {
   type        = list(string)
   description = "CIDRs that are authorized to access the bastion host."
 }
@@ -88,19 +88,56 @@ variable "assets_bucket" {
 variable "helm_enabled" {
   type        = bool
   default     = "false"
-  description = "Installs helm apps if set to true. Should be set to true only after Kubernetes cluster already exists."
+  description = "This variable is ignored in the serverless submodule."
 }
 
 variable "helm_nginx_ingress_classes" {
   type        = list(string)
   default     = [ "nginx" ]
-  description = "NGINX ingress class for each NGINX ingress installation. Provide multiple if you want to install multiple NGINX ingresses."
+  description = "This variable is ignored in the serverless submodule."
 }
 
 variable "helm_nginx_ingress_replica_counts" {
   type        = list(string)
   default     = []
-  description = "Replica count for each NGINX ingress installation. Provide multiple if you want to install multiple NGINX ingresses."
+  description = "This variable is ignored in the serverless submodule."
+}
+
+/* Kubernetes */
+
+variable "kubernetes_name" {
+  type        = string
+  description = "This variable is ignored in the serverless submodule."
+}
+
+variable "kubernetes_context" {
+  type        = string
+  default     = ""
+  description = "This variable is ignored in the serverless submodule."
+}
+
+variable "kubernetes_machine_type" {
+  type        = string
+  default     = "n1-standard-1"
+  description = "This variable is ignored in the serverless submodule."
+}
+
+variable "kubernetes_disk_size_gb" {
+  type        = number
+  default     = "100"
+  description = "This variable is ignored in the serverless submodule."
+}
+
+variable "kubernetes_min_node_count" {
+  type        = number
+  default     = 1
+  description = "This variable is ignored in the serverless submodule."
+}
+
+variable "kubernetes_max_node_count" {
+  type        = number
+  default     = 1
+  description = "This variable is ignored in the serverless submodule."
 }
 
 /* Postgres */
