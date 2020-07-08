@@ -38,6 +38,12 @@ variable "region" {
   description = "AWS region."
 }
 
+/* Domain */
+
+variable "default_domain" {
+  type = string
+}
+
 /* Users */
 
 variable "developers" {
