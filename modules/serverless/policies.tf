@@ -80,7 +80,9 @@ data "aws_iam_policy_document" "deployer" {
     ]
 
     resources = [
+      "arn:aws:s3:::${var.projects_bucket}",
       "arn:aws:s3:::${var.projects_bucket}/*",
+      "arn:aws:s3:::${var.assets_bucket}",
       "arn:aws:s3:::${var.assets_bucket}/*"
     ]
   }
