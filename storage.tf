@@ -96,7 +96,7 @@ resource "aws_s3_bucket" "assets" {
 
   cors_rule {
     allowed_origins = ["*"]
-    allowed_methods = ["GET"]
+    allowed_methods = ["GET", "HEAD"]
   }
 
   versioning {
