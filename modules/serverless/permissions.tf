@@ -52,6 +52,11 @@ resource "aws_iam_role_policy_attachment" "cicd_deployer" {
   policy_arn = aws_iam_policy.deployer.arn
 }
 
+resource "aws_iam_role_policy_attachment" "cicd_serverless_deployer" {
+  role       = aws_iam_role.cicd.name
+  policy_arn = aws_iam_policy.serverless_deployer.arn
+}
+
 resource "aws_iam_role_policy_attachment" "cicd_devopssecretreader" {
   role       = aws_iam_role.cicd.name
   policy_arn = aws_iam_policy.devopssecretreader.arn
@@ -72,6 +77,11 @@ resource "aws_iam_user_policy_attachment" "cicd_registryuser" {
 resource "aws_iam_user_policy_attachment" "cicd_deployer" {
   user       = aws_iam_user.cicd.name
   policy_arn = aws_iam_policy.deployer.arn
+}
+
+resource "aws_iam_user_policy_attachment" "cicd_serverless_deployer" {
+  user       = aws_iam_user.cicd.name
+  policy_arn = aws_iam_policy.serverless_deployer.arn
 }
 
 resource "aws_iam_user_policy_attachment" "cicd_devopssecretreader" {
@@ -97,6 +107,12 @@ resource "aws_iam_user_policy_attachment" "developer_deployer" {
   count      = length(var.developers)
   user       = regex("[^/]*$", var.developers[count.index])
   policy_arn = aws_iam_policy.deployer.arn
+}
+
+resource "aws_iam_user_policy_attachment" "developer_serverless_deployer" {
+  count      = length(var.developers)
+  user       = regex("[^/]*$", var.developers[count.index])
+  policy_arn = aws_iam_policy.serverless_deployer.arn
 }
 
 resource "aws_iam_user_policy_attachment" "developer_devopssecretwriter" {

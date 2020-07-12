@@ -88,6 +88,54 @@ data "aws_iam_policy_document" "deployer" {
   }
 }
 
+resource "aws_iam_policy" "serverless_deployer" {
+  name   = "${var.name}-serverless-deployer"
+  policy = "${data.aws_iam_policy_document.serverless_deployer.json}"
+}
+
+data "aws_iam_policy_document" "serverless_deployer" {
+  statement {
+    actions = [
+      "eks:DescribeCluster",
+      "eks:ListClusters",
+      "route53:ListHostedZones",
+      "route53:GetHostedZone",
+      "route53:ListTagsForResource",
+      "route53:ListResourceRecordSets",
+      "route53:ChangeResourceRecordSets",
+      "route53:GetChange",
+      "route53:CreateHealthCheck",
+      "acm:ListCertificates",
+      "acm:DescribeCertificate",
+      "acm:ListTagsForCertificate",
+      "iam:GetRole",
+      "iam:GetRolePolicy",
+      "iam:ListAttachedRolePolicies",
+      "iam:PutRolePolicy",
+      "apigateway:*",
+      "lambda:*",
+    ]
+
+    # TODO: Limit modification rights to instances of a zone
+    resources = [
+      "*"
+    ]
+  }
+
+  statement {
+    actions = [
+      "s3:*"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.projects_bucket}",
+      "arn:aws:s3:::${var.projects_bucket}/*",
+      "arn:aws:s3:::${var.assets_bucket}",
+      "arn:aws:s3:::${var.assets_bucket}/*"
+    ]
+  }
+}
+
 resource "aws_iam_policy" "assetsreader" {
   name   = "${var.name}-assetsreader"
   policy = "${data.aws_iam_policy_document.assetsreader.json}"
