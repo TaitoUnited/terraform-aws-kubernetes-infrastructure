@@ -38,7 +38,7 @@ module "mysql" {
   create_db_subnet_group = length(local.mysqlClusters) > 0
 
   identifier = length(local.mysqlClusters) > 0 ? local.mysqlClusters[0].name : "dummy"
-  username   = local.mysqlClusters[0].adminUsername
+  username   = length(local.mysqlClusters) > 0 ? local.mysqlClusters[0].adminUsername : "dummy"
   password   = length(local.mysqlClusters) > 0 ? random_string.mysql_admin_password[0].result : "dummy"
   port       = "3306"
 

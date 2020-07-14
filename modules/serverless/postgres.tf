@@ -38,7 +38,7 @@ module "postgres" {
   create_db_subnet_group = length(local.postgresClusters) > 0
 
   identifier = length(local.postgresClusters) > 0 ? local.postgresClusters[0].name : "dummy"
-  username   = local.postgresClusters[0].adminUsername
+  username   = length(local.postgresClusters) > 0 ? local.postgresClusters[0].adminUsername : "dummy"
   password   = length(local.postgresClusters) > 0 ? random_string.postgres_admin_password[0].result : "dummy"
   port       = "5432"
 

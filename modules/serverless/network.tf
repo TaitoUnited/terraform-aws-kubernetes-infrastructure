@@ -23,12 +23,7 @@ module "network" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "2.17.0"
   name    = "${var.name}-vpc"
-  tags = merge(
-    local.tags,
-    {
-      "kubernetes.io/cluster/${var.kubernetes_name}" = "shared"
-    },
-  )
+  tags = local.tags
 
   cidr = "10.10.0.0/16"
   azs = [

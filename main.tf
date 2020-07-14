@@ -49,7 +49,7 @@ locals {
     net.cidr
   ]
 
-  developers = var.variables.developers
+  developers = try(var.variables.developers, [])
 
   kubernetes = var.variables.kubernetes
   nodePools = try(var.variables.kubernetes.nodePools, [])

@@ -34,7 +34,7 @@ locals {
     net.ip
   ]
 
-  developers = var.variables.developers
+  developers = try(var.variables.developers, [])
 
   postgresClusters = try(var.variables.postgresClusters, [])
   mysqlClusters = try(var.variables.mysqlClusters, [])
