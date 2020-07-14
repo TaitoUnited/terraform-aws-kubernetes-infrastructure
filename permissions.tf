@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,31 +96,31 @@ resource "aws_iam_user_policy_attachment" "cicd_devopssecretreader" {
 /* Developers */
 
 resource "aws_iam_user_policy_attachment" "developer_kubernetesuser" {
-  count      = length(var.developers)
-  user       = regex("[^/]*$", var.developers[count.index])
+  count      = length(local.developers)
+  user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = aws_iam_policy.kubernetesuser.arn
 }
 
 resource "aws_iam_user_policy_attachment" "developer_registryuser" {
-  count      = length(var.developers)
-  user       = regex("[^/]*$", var.developers[count.index])
+  count      = length(local.developers)
+  user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
 }
 
 resource "aws_iam_user_policy_attachment" "developer_deployer" {
-  count      = length(var.developers)
-  user       = regex("[^/]*$", var.developers[count.index])
+  count      = length(local.developers)
+  user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = aws_iam_policy.deployer.arn
 }
 
 resource "aws_iam_user_policy_attachment" "developer_serverless_deployer" {
-  count      = length(var.developers)
-  user       = regex("[^/]*$", var.developers[count.index])
+  count      = length(local.developers)
+  user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = aws_iam_policy.serverless_deployer.arn
 }
 
 resource "aws_iam_user_policy_attachment" "developer_devopssecretwriter" {
-  count      = length(var.developers)
-  user       = regex("[^/]*$", var.developers[count.index])
+  count      = length(local.developers)
+  user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = aws_iam_policy.devopssecretwriter.arn
 }

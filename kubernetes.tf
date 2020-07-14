@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,24 @@ locals {
   worker_groups = [
     {
       name                 = "default_worker_group"
-      instance_type        = var.kubernetes_machine_type
+      instance_type        = local.nodePools[0].machineType
       subnets              = module.network.private_subnets
-      asg_desired_capacity = var.kubernetes_min_node_count
-      asg_min_size         = var.kubernetes_min_node_count
-      asg_max_size         = var.kubernetes_max_node_count
+      asg_desired_capacity = local.nodePools[0].minNodeCount
+      asg_min_size         = local.nodePools[0].minNodeCount
+      asg_max_size         = local.nodePools[0].maxNodeCount
     },
   ]
 
   /* TODO enable worker_groups_launch_template?
   worker_groups_launch_template = [
     {
-      instance_type                            = "${var.kubernetes_machine_type}"
+      instance_type                            = "${local.kubernetes[0].machineType}"
       subnets                                  = module.network.private_subnets
       additional_security_group_ids            = "${aws_security_group.worker_group_mgmt_one.id},${aws_security_group.worker_group_mgmt_two.id}"
-      override_instance_type                   = "${var.kubernetes_machine_type_override}"
-      asg_desired_capacity                     = "${var.kubernetes_min_node_count}"
-      asg_min_size                             = "${var.kubernetes_min_node_count}"
-      asg_max_size                             = "${var.kubernetes_max_node_count}"
+      override_instance_type                   = "${local.nodePools[0].machineTypeOverride}"
+      asg_desired_capacity                     = local.nodePools[0].minNodeCount
+      asg_min_size                             = local.nodePools[0].minNodeCount
+      asg_max_size                             = local.nodePools[0].maxNodeCount
       spot_instance_pools                      = 10
       on_demand_percentage_above_base_capacity = "0"
     },
@@ -43,17 +43,17 @@ locals {
   */
 
   workers_group_defaults = {
-    root_volume_size = var.kubernetes_disk_size_gb
+    root_volume_size = var.nodePools[0].diskSizeGb
     root_volume_type = "gp2"
   }
 }
 
 module "kubernetes" {
-  # TODO: count                        = var.kubernetes_name != "" ? 1 : 0
+  # TODO: count                        = local.kubernetes != "" ? 1 : 0
 
   source                               = "terraform-aws-modules/eks/aws"
   version                              = "6.0.2"
-  cluster_name                         = var.kubernetes_name
+  cluster_name                         = local.kubernetes.name
   subnets                              = module.network.private_subnets
   tags                                 = local.tags
   vpc_id                               = module.network.vpc_id
@@ -75,7 +75,7 @@ module "kubernetes" {
   ]
 
   map_users          = [
-    for arn in concat([ aws_iam_user.cicd.arn ], var.developers):
+    for arn in concat([ aws_iam_user.cicd.arn ], local.developers):
     {
       userarn = arn
       username = regex("[^/]*$", arn)

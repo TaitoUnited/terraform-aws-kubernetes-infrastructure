@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,15 @@
  */
 
 resource "random_string" "postgres_admin_password" {
-  count    = length(var.postgres_instances)
+  count    = length(local.postgresClusters)
 
   length  = 32
   special = false
   upper   = true
 
   keepers = {
-    postgres_instance = var.postgres_instances[count.index]
-    postgres_admin    = var.postgres_admins[count.index]
+    postgres_instance = local.postgresClusters[count.index].name
+    postgres_admin    = local.postgresClusters[count.index].adminUsername
   }
 }
 
@@ -32,22 +32,22 @@ module "postgres" {
   version = "2.5.0"
 
   # Do not create anything if there are no instances (count not supported)
-  create_db_instance = length(var.postgres_instances) > 0
-  create_db_option_group = length(var.postgres_instances) > 0
-  create_db_parameter_group = length(var.postgres_instances) > 0
-  create_db_subnet_group = length(var.postgres_instances) > 0
+  create_db_instance = length(local.postgresClusters) > 0
+  create_db_option_group = length(local.postgresClusters) > 0
+  create_db_parameter_group = length(local.postgresClusters) > 0
+  create_db_subnet_group = length(local.postgresClusters) > 0
 
-  identifier = length(var.postgres_instances) > 0 ? var.postgres_instances[0] : "dummy"
-  username   = var.postgres_admins[0]
-  password   = length(var.postgres_instances) > 0 ? random_string.postgres_admin_password[0].result : "dummy"
+  identifier = length(local.postgresClusters) > 0 ? local.postgresClusters[0].name : "dummy"
+  username   = local.postgresClusters[0].adminUsername
+  password   = length(local.postgresClusters) > 0 ? random_string.postgres_admin_password[0].result : "dummy"
   port       = "5432"
 
   tags = local.tags
 
   engine            = "postgres"
   engine_version    = "10.6"
-  instance_class    = length(var.postgres_instances) > 0 ? var.postgres_tiers[0] : ""
-  allocated_storage = length(var.postgres_instances) > 0 ? var.postgres_sizes[0] : ""
+  instance_class    = length(local.postgresClusters) > 0 ? local.postgresClusters[0].tier : ""
+  allocated_storage = length(local.postgresClusters) > 0 ? local.postgresClusters[0].size : ""
   storage_type      = "gp2"
   storage_encrypted = false
 
@@ -66,7 +66,7 @@ module "postgres" {
   major_engine_version = "10.6"
 
   # Snapshot name upon DB deletion
-  final_snapshot_identifier = length(var.postgres_instances) > 0 ? var.postgres_instances[0] : "dummy"
+  final_snapshot_identifier = length(local.postgresClusters) > 0 ? local.postgresClusters[0].name : "dummy"
 
   # Database Deletion Protection
   deletion_protection = true

@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ provider "helm" {
   install_tiller = false
   max_history    = 20
   kubernetes {
-    config_context = var.kubernetes_context != "" ? var.kubernetes_context : var.name
+    config_context = local.kubernetes.context != "" ? local.kubernetes.context : var.name
   }
 }
 
@@ -42,6 +42,22 @@ locals {
     name        = var.name
     workspace   = terraform.workspace
   }
+
+  # TODO: limit access
+  authorizedNetworkCIDRs = [
+    for net in var.variables.authorizedNetworks:
+    net.cidr
+  ]
+
+  developers = var.variables.developers
+
+  kubernetes = var.variables.kubernetes
+  nodePools = try(var.variables.kubernetes.nodePools, [])
+  nginxIngressControllers = try(var.variables.kubernetes.nginxIngressControllers, [])
+
+  postgresClusters = try(var.variables.postgresClusters, [])
+  mysqlClusters = try(var.variables.mysqlClusters, [])
+
 }
 
 data "aws_availability_zones" "available" {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,17 @@ locals {
     name        = var.name
     workspace   = terraform.workspace
   }
+
+  authorizedNetworkIPs = [
+    for net in var.variables.authorizedNetworks:
+    net.ip
+  ]
+
+  developers = var.variables.developers
+
+  postgresClusters = try(var.variables.postgresClusters, [])
+  mysqlClusters = try(var.variables.mysqlClusters, [])
+
 }
 
 data "aws_availability_zones" "available" {

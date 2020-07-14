@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ variable "user_profile" {
 }
 
 variable "region" {
-  type = string
+  type        = string
   description = "AWS region."
 }
 
@@ -44,24 +44,11 @@ variable "default_domain" {
   type = string
 }
 
-/* Users */
-
-variable "developers" {
-  type    = list(string)
-  default = []
-  description = "ARNs of developers (e.g. [ \"arn:aws:iam::1234567890:user/john-doe\" ])."
-}
-
 /* Settings */
 
 variable "email" {
   type        = string
   description = "Email address for DevOps support."
-}
-
-variable "authorized_networks" {
-  type        = list(string)
-  description = "CIDRs that are authorized to access the bastion host."
 }
 
 variable "archive_day_limit" {
@@ -94,108 +81,7 @@ variable "assets_bucket" {
 variable "helm_enabled" {
   type        = bool
   default     = "false"
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "helm_nginx_ingress_classes" {
-  type        = list(string)
-  default     = [ "nginx" ]
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "helm_nginx_ingress_replica_counts" {
-  type        = list(string)
-  default     = []
-  description = "This variable is ignored in the serverless submodule."
-}
-
-/* Kubernetes */
-
-variable "kubernetes_name" {
-  type        = string
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "kubernetes_context" {
-  type        = string
-  default     = ""
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "kubernetes_machine_type" {
-  type        = string
-  default     = "n1-standard-1"
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "kubernetes_disk_size_gb" {
-  type        = number
-  default     = "100"
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "kubernetes_min_node_count" {
-  type        = number
-  default     = 1
-  description = "This variable is ignored in the serverless submodule."
-}
-
-variable "kubernetes_max_node_count" {
-  type        = number
-  default     = 1
-  description = "This variable is ignored in the serverless submodule."
-}
-
-/* Postgres */
-
-variable "postgres_instances" {
-  type        = list(string)
-  default     = []
-  description = "Name for each PostgreSQL cluster. Provide multiple if you require multiple PostgreSQL clusters. NOTE: Currently supports only one PostgreSQL cluster as Terraform does not support count for modules."
-}
-
-variable "postgres_tiers" {
-  type    = list(string)
-  default = ["db.t3.medium"]
-  description = "Tier for each PostgreSQL cluster. Provide multiple if you require multiple clusters."
-}
-
-variable "postgres_sizes" {
-  type    = list(string)
-  default = ["20"]
-  description = "Size for each PostgreSQL cluster. Provide multiple if you require multiple clusters."
-}
-
-variable "postgres_admins" {
-  type    = list(string)
-  default = ["dummy"]
-  description = "Admin username for each PostgreSQL cluster. Provide multiple if you require multiple clusters."
-}
-
-/* MySQL */
-
-variable "mysql_instances" {
-  type    = list(string)
-  default = []
-  description = "Name for each MySQL cluster. Provide multiple if you require multiple clusters. NOTE: Currently supports only one MySQL cluster as Terraform does not support count for modules."
-}
-
-variable "mysql_tiers" {
-  type    = list(string)
-  default = ["db.t3.medium"]
-  description = "Tier for each MySQL cluster. Provide multiple if you require multiple clusters."
-}
-
-variable "mysql_sizes" {
-  type    = list(string)
-  default = ["20"]
-  description = "Size for each MySQL cluster. Provide multiple if you require multiple clusters."
-}
-
-variable "mysql_admins" {
-  type    = list(string)
-  default = ["dummy"]
-  description = "Admin username for each MySQL cluster. Provide multiple if you require multiple clusters."
+  description = "Installs helm apps if set to true. Should be set to true only after Kubernetes cluster already exists."
 }
 
 /* Messaging */
@@ -208,4 +94,11 @@ variable "messaging_webhook" {
 variable "messaging_critical_channel" {
   type        = string
   description = "Slack channel name for receiving critical alerts."
+}
+
+# Additional variables as a json/yaml
+
+variable "variables" {
+  type    = any
+  description = "Ingress and services as json/yaml. See README.md for format."
 }

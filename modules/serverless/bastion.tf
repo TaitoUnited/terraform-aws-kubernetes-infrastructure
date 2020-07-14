@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 module "ssm-bastion" {
   source            = "JamesWoolfenden/ssm-bastion/aws"
   version           ="0.1.10"
-  allowed_ips       = join(" ", var.authorized_networks)
+  allowed_ips       = join(" ", local.authorizedNetworkIPs)
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
   instance_type     = "t2.micro"

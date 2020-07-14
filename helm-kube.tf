@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ resource "helm_release" "metrics_server" {
 
   set {
     name  = "rbac.pspEnabled"
-    value    = "false" # TODO: var.kubernetes_pod_security_policy
+    value    = "false" # TODO: var.kubernetes.podSecurityPolicy
   }
 }
 
@@ -68,6 +68,6 @@ resource "helm_release" "fluentd_cloudwatch" {
 
   set {
     name  = "logGroupName"
-    value = var.kubernetes_name
+    value = local.kubernetes.name
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Taito United
+ * Copyright 2020 Taito United
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 resource "helm_release" "postgres_proxy" {
   depends_on = [module.kubernetes, helm_release.letsencrypt_issuer]
 
-  count      = var.helm_enabled ? length(var.postgres_instances) : 0
-  name       = var.postgres_instances[count.index]
+  count      = var.helm_enabled ? length(local.postgresClusters) : 0
+  name       = local.postgresClusters[count.index].name
   namespace  = "db-proxy"
   repository = "https://kubernetes-charts.storage.googleapis.com/"
   chart      = "socat-tunneller"
@@ -39,8 +39,8 @@ resource "helm_release" "postgres_proxy" {
 resource "helm_release" "mysql_proxy" {
   depends_on = [module.kubernetes, helm_release.postgres_proxy]
 
-  count      = var.helm_enabled ? length(var.mysql_instances) : 0
-  name       = var.mysql_instances[count.index]
+  count      = var.helm_enabled ? length(local.mysqlClusters) : 0
+  name       = local.mysqlClusters[count.index].name
   namespace  = "db-proxy"
   repository = "https://kubernetes-charts.storage.googleapis.com/"
   chart      = "socat-tunneller"
