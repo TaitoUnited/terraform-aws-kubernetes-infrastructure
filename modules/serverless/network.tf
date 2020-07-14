@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-/*
 data "aws_security_group" "default" {
   name   = "default"
   vpc_id = "${module.network.vpc_id}"
 }
-*/
 
 module "network" {
   source  = "terraform-aws-modules/vpc/aws"
@@ -43,9 +41,37 @@ module "network" {
   public_subnets   = ["10.10.11.0/24", "10.10.12.0/24", "10.10.13.0/24"]
   database_subnets = ["10.10.21.0/24", "10.10.22.0/24", "10.10.23.0/24"]
 
-  # elasticache_subnets = ["10.10.31.0/24", "10.10.32.0/24", "10.10.33.0/24"]
+  elasticache_subnets   = ["10.10.31.0/24", "10.10.32.0/24", "10.10.33.0/24"]
   # redshift_subnets    = ["10.10.41.0/24", "10.10.42.0/24", "10.10.43.0/24"]
   # intra_subnets       = ["10.10.51.0/24", "10.10.52.0/24", "10.10.53.0/24"]
+
+  private_subnet_tags = merge(
+    local.tags,
+    {
+      "tier" = "private"
+    },
+  )
+
+  public_subnet_tags = merge(
+    local.tags,
+    {
+      "tier" = "public"
+    },
+  )
+
+  database_subnet_tags = merge(
+    local.tags,
+    {
+      "tier" = "database"
+    },
+  )
+
+  elasticache_subnet_tags = merge(
+    local.tags,
+    {
+      "tier" = "elasticache"
+    },
+  )
 
   # create_database_subnet_group     = false
   # enable_dns_hostnames             = true
@@ -59,15 +85,16 @@ module "network" {
   # dhcp_options_domain_name_servers = ["127.0.0.1", "10.10.0.2"]
 
   # VPC endpoint for S3
-  # enable_s3_endpoint = true
+  enable_s3_endpoint = true
 
   # VPC endpoint for DynamoDB
   # enable_dynamodb_endpoint = true
 
   # VPC endpoint for SSM
-  # enable_ssm_endpoint              = true
+  enable_ssm_endpoint                = true
   # ssm_endpoint_private_dns_enabled = true
-  # ssm_endpoint_security_group_ids  = ["${data.aws_security_group.default.id}"]
+  # TODO: proper security group
+  ssm_endpoint_security_group_ids    = ["${data.aws_security_group.default.id}"]
   # ssm_endpoint_subnet_ids = ["..."]
 
   # VPC endpoint for SSMMESSAGES
