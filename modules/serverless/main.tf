@@ -30,14 +30,26 @@ locals {
   }
 
   authorizedNetworkIPs = [
-    for net in var.variables.authorizedNetworks:
+    for net in try(var.variables.authorizedNetworks, []):
     net.ip
   ]
 
-  developers = try(var.variables.developers, [])
+  developers = try(
+    var.variables.developers != null ? var.variables.developers : [], []
+  )
 
-  postgresClusters = try(var.variables.postgresClusters, [])
-  mysqlClusters = try(var.variables.mysqlClusters, [])
+  postgresClusters = try(
+    var.variables.postgresClusters != null
+    ? var.variables.postgresClusters
+    : [],
+    []
+  )
+  mysqlClusters = try(
+    var.variables.mysqlClusters != null
+    ? var.variables.mysqlClusters
+    : [],
+    []
+  )
 
 }
 

@@ -82,15 +82,15 @@ resource "aws_s3_bucket_public_access_block" "projects" {
   block_public_policy = true
 }
 
-resource "aws_s3_bucket" "assets" {
-  count  = var.assets_bucket != "" ? 1 : 0
-  bucket = var.assets_bucket
+resource "aws_s3_bucket" "public" {
+  count  = var.public_bucket != "" ? 1 : 0
+  bucket = var.public_bucket
   region = var.region
 
   tags = merge(
     local.tags,
     {
-      "purpose" = "assets"
+      "purpose" = "public"
     },
   )
 
@@ -129,8 +129,8 @@ data "aws_iam_policy_document" "publicassets" {
     ]
 
     resources = [
-      "arn:aws:s3:::${var.assets_bucket}",
-      "arn:aws:s3:::${var.assets_bucket}/*"
+      "arn:aws:s3:::${var.public_bucket}",
+      "arn:aws:s3:::${var.public_bucket}/*"
     ]
   }
 }

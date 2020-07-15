@@ -82,8 +82,8 @@ data "aws_iam_policy_document" "deployer" {
     resources = [
       "arn:aws:s3:::${var.projects_bucket}",
       "arn:aws:s3:::${var.projects_bucket}/*",
-      "arn:aws:s3:::${var.assets_bucket}",
-      "arn:aws:s3:::${var.assets_bucket}/*"
+      "arn:aws:s3:::${var.public_bucket}",
+      "arn:aws:s3:::${var.public_bucket}/*"
     ]
   }
 }
@@ -130,8 +130,8 @@ data "aws_iam_policy_document" "serverless_deployer" {
     resources = [
       "arn:aws:s3:::${var.projects_bucket}",
       "arn:aws:s3:::${var.projects_bucket}/*",
-      "arn:aws:s3:::${var.assets_bucket}",
-      "arn:aws:s3:::${var.assets_bucket}/*"
+      "arn:aws:s3:::${var.public_bucket}",
+      "arn:aws:s3:::${var.public_bucket}/*"
     ]
   }
 }
@@ -148,8 +148,8 @@ data "aws_iam_policy_document" "assetsreader" {
     ]
 
     resources = [
-      "arn:aws:s3:::${var.assets_bucket}",
-      "arn:aws:s3:::${var.assets_bucket}/*"
+      "arn:aws:s3:::${var.public_bucket}",
+      "arn:aws:s3:::${var.public_bucket}/*"
     ]
   }
 }
@@ -178,7 +178,7 @@ data "aws_iam_policy_document" "devopssecretreader" {
     ]
 
     resources = [
-      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.name}/devops/*"
+      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.name}${var.cicd_secrets_path}/*"
     ]
   }
 }
@@ -211,7 +211,7 @@ data "aws_iam_policy_document" "devopssecretwriter" {
     ]
 
     resources = [
-      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.name}/devops/*"
+      "arn:aws:ssm:${var.region}:${var.account_id}:parameter/${var.name}${var.cicd_secrets_path}/*"
     ]
   }
 }

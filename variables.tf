@@ -42,6 +42,15 @@ variable "region" {
 
 variable "default_domain" {
   type = string
+  description = "Default domain (e.g. mydomain.com)"
+}
+
+/* Secrets */
+
+variable "cicd_secrets_path" {
+  type    = string
+  default = ""
+  description = "With this you can limit secret read permissions of CI/CD role to a specific subpath under /${var.name} (e.g. '/devops' becomes /${var.name}/devops)."
 }
 
 /* Settings */
@@ -70,7 +79,7 @@ variable "projects_bucket" {
   description = "Name of storage bucket used for storing function packages, etc."
 }
 
-variable "assets_bucket" {
+variable "public_bucket" {
   type        = string
   default     = ""
   description = "Name of storage bucket used for storing static assets."
