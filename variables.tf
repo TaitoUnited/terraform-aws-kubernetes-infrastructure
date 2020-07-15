@@ -50,7 +50,7 @@ variable "default_domain" {
 variable "cicd_secrets_path" {
   type    = string
   default = ""
-  description = "With this you can limit secret read permissions of CI/CD role to a specific subpath under /${var.name} (e.g. '/devops' becomes /${var.name}/devops)."
+  description = "With this you can limit secret read permissions of CI/CD role to a specific subpath under /NAME (e.g. '/devops' becomes /NAME/devops)."
 }
 
 /* Settings */
