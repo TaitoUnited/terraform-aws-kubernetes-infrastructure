@@ -105,6 +105,11 @@ variable "messaging_critical_channel" {
   description = "Slack channel name for receiving critical alerts."
 }
 
+variable "messaging_builds_channel" {
+  type        = string
+  description = "Slack channel name for receiving build alerts."
+}
+
 # Additional variables as a json/yaml
 
 variable "variables" {
