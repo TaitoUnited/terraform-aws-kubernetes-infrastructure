@@ -22,7 +22,7 @@ module "ssm-bastion" {
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
   instance_type     = "t2.micro"
-  ssm_standard_role = aws_iam_role.logger.arn
+  ssm_standard_role = aws_iam_policy.logger.arn
   subnet_id         = module.network.public_subnets[0]
   environment       = var.name
   name              = var.name

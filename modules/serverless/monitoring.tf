@@ -17,12 +17,13 @@
 /* TODO: implement enable/disable once terraform supports count for modules */
 module "notify_slack_uptimez" {
   source  = "terraform-aws-modules/notify-slack/aws"
-  version = "2.3.0"
+  version = "3.3.0"
 
-  sns_topic_name    = "${var.name}-uptimez"
-  slack_webhook_url = var.messaging_webhook
-  slack_channel     = var.messaging_critical_channel
-  slack_username    = "${var.name} uptime check"
+  sns_topic_name       = "${var.name}-uptimez"
+  lambda_function_name = "${var.name}-uptimez"
+  slack_webhook_url    = var.messaging_webhook
+  slack_channel        = var.messaging_critical_channel
+  slack_username       = "${var.name} uptime check"
 
   tags = local.tags
 }
@@ -30,12 +31,13 @@ module "notify_slack_uptimez" {
 /* TODO: implement enable/disable once terraform supports count for modules */
 module "notify_slack_builds" {
   source  = "terraform-aws-modules/notify-slack/aws"
-  version = "2.3.0"
+  version = "3.3.0"
 
-  sns_topic_name    = "${var.name}-builds"
-  slack_webhook_url = var.messaging_webhook
-  slack_channel     = var.messaging_builds_channel
-  slack_username    = "${var.name} uptime check"
+  sns_topic_name       = "${var.name}-builds"
+  lambda_function_name = "${var.name}-builds"
+  slack_webhook_url    = var.messaging_webhook
+  slack_channel        = var.messaging_builds_channel
+  slack_username       = "${var.name} uptime check"
 
   tags = local.tags
 }
