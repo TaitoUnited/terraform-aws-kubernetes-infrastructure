@@ -9,7 +9,7 @@ This module is used by [infrastructure templates](https://taitounited.github.io/
 Example YAML for variables:
 
 ```
-# TODO: support for authorized networks
+# TODO: support for authorized network CIDRs on Kubernetes setup
 authorizedNetworks:
   - cidr: 127.127.127.127/32
 

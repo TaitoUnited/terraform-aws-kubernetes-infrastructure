@@ -9,7 +9,6 @@ This module is used by Taito CLI [infrastructure templates](https://taitounited.
 Example YAML for variables:
 
 ```
-# TODO: support for multiple CIDR addresses instead of single IP address
 authorizedNetworks:
   - ip: 127.127.127.127
 
