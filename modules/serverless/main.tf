@@ -29,9 +29,9 @@ locals {
     workspace   = terraform.workspace
   }
 
-  authorizedNetworkIPs = [
+  authorizedNetworkCIDRs = [
     for net in try(var.variables.authorizedNetworks, []):
-    net.ip
+    net.cidr
   ]
 
   developers = try(

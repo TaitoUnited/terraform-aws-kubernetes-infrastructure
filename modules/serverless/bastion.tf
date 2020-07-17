@@ -15,14 +15,15 @@
  */
 
 module "ssm-bastion" {
-  source            = "JamesWoolfenden/ssm-bastion/aws"
-  version           ="0.1.10"
+  # source            = "JamesWoolfenden/ssm-bastion/aws"
+  # version           = "0.1.10"
+  source            = "git::https://github.com/TaitoUnited/terraform-aws-ssm-bastion.git"
   allowed_ips       = join(" ", local.authorizedNetworkIPs)
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
   instance_type     = "t2.micro"
-  ssm_standard_role = "arn:aws:iam::${var.account_id}:policy/${var.name}-logger"
+  ssm_standard_role = aws_iam_role.logger.arn
   subnet_id         = module.network.public_subnets[0]
   environment       = var.name
-  name              = "${var.name}-bastion"
+  name              = var.name
 }
