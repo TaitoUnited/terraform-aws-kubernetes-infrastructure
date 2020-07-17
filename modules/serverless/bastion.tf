@@ -18,7 +18,7 @@ module "ssm-bastion" {
   # source            = "JamesWoolfenden/ssm-bastion/aws"
   # version           = "0.1.10"
   source            = "git::https://github.com/TaitoUnited/terraform-aws-ssm-bastion.git"
-  allowed_ips       = join(" ", local.authorizedNetworkIPs)
+  allowed_cidrs     = local.authorizedNetworkCIDRs
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
   instance_type     = "t2.micro"

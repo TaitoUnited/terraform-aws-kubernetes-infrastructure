@@ -59,7 +59,7 @@ EOF
 
 resource "aws_iam_policy" "deployer" {
   name   = "${var.name}-deployer"
-  policy = "${data.aws_iam_policy_document.deployer.json}"
+  policy = data.aws_iam_policy_document.deployer.json
 }
 
 data "aws_iam_policy_document" "deployer" {
@@ -90,7 +90,7 @@ data "aws_iam_policy_document" "deployer" {
 
 resource "aws_iam_policy" "serverlessdeployer" {
   name   = "${var.name}-serverlessdeployer"
-  policy = "${data.aws_iam_policy_document.serverlessdeployer.json}"
+  policy = data.aws_iam_policy_document.serverlessdeployer.json
 }
 
 data "aws_iam_policy_document" "serverlessdeployer" {
@@ -138,7 +138,7 @@ data "aws_iam_policy_document" "serverlessdeployer" {
 
 resource "aws_iam_policy" "devopssecretreader" {
   name   = "${var.name}-devopssecretreader"
-  policy = "${data.aws_iam_policy_document.devopssecretreader.json}"
+  policy = data.aws_iam_policy_document.devopssecretreader.json
 }
 
 data "aws_iam_policy_document" "devopssecretreader" {
@@ -167,7 +167,7 @@ data "aws_iam_policy_document" "devopssecretreader" {
 
 resource "aws_iam_policy" "devopssecretwriter" {
   name   = "${var.name}-devopssecretwriter"
-  policy = "${data.aws_iam_policy_document.devopssecretwriter.json}"
+  policy = data.aws_iam_policy_document.devopssecretwriter.json
 }
 
 data "aws_iam_policy_document" "devopssecretwriter" {

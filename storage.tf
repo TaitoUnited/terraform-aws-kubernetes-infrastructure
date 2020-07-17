@@ -114,7 +114,7 @@ resource "aws_s3_bucket" "public" {
     prevent_destroy = true
   }
 
-  policy = "${data.aws_iam_policy_document.publicassets.json}"
+  policy = data.aws_iam_policy_document.publicassets.json
 }
 
 data "aws_iam_policy_document" "publicassets" {

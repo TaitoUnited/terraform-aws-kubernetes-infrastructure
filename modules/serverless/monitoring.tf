@@ -71,7 +71,7 @@ PATTERN
 
 resource "aws_sns_topic_policy" "build_alerts" {
   arn    = module.notify_slack_builds.this_slack_topic_arn
-  policy = "${data.aws_iam_policy_document.build_alerts_topic_policy.json}"
+  policy = data.aws_iam_policy_document.build_alerts_topic_policy.json
 }
 
 data "aws_iam_policy_document" "build_alerts_topic_policy" {
@@ -84,6 +84,6 @@ data "aws_iam_policy_document" "build_alerts_topic_policy" {
       identifiers = ["events.amazonaws.com"]
     }
 
-    resources = ["${aws_sns_topic.aws_logins.arn}"]
+    resources = [ module.notify_slack_builds.this_slack_topic_arn ]
   }
 }
