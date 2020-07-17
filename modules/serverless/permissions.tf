@@ -28,67 +28,6 @@ resource "aws_iam_role_policy_attachment" "monitoring_rds" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole"
 }
 
-/* Gateway role */
-
-resource "aws_iam_role_policy_attachment" "gateway_assetsreader" {
-  role       = aws_iam_role.gateway.name
-  policy_arn = aws_iam_policy.assetsreader.arn
-}
-
-/* CI/CD role */
-
-resource "aws_iam_role_policy_attachment" "cicd_kubernetesuser" {
-  role       = aws_iam_role.cicd.name
-  policy_arn = aws_iam_policy.kubernetesuser.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cicd_registryuser" {
-  role       = aws_iam_role.cicd.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
-}
-
-resource "aws_iam_role_policy_attachment" "cicd_deployer" {
-  role       = aws_iam_role.cicd.name
-  policy_arn = aws_iam_policy.deployer.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cicd_serverless_deployer" {
-  role       = aws_iam_role.cicd.name
-  policy_arn = aws_iam_policy.serverless_deployer.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cicd_devopssecretreader" {
-  role       = aws_iam_role.cicd.name
-  policy_arn = aws_iam_policy.devopssecretreader.arn
-}
-
-/* CI/CD user */
-
-resource "aws_iam_user_policy_attachment" "cicd_kubernetesuser" {
-  user       = aws_iam_user.cicd.name
-  policy_arn = aws_iam_policy.kubernetesuser.arn
-}
-
-resource "aws_iam_user_policy_attachment" "cicd_registryuser" {
-  user       = aws_iam_user.cicd.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser"
-}
-
-resource "aws_iam_user_policy_attachment" "cicd_deployer" {
-  user       = aws_iam_user.cicd.name
-  policy_arn = aws_iam_policy.deployer.arn
-}
-
-resource "aws_iam_user_policy_attachment" "cicd_serverless_deployer" {
-  user       = aws_iam_user.cicd.name
-  policy_arn = aws_iam_policy.serverless_deployer.arn
-}
-
-resource "aws_iam_user_policy_attachment" "cicd_devopssecretreader" {
-  user       = aws_iam_user.cicd.name
-  policy_arn = aws_iam_policy.devopssecretreader.arn
-}
-
 /* Developers */
 
 resource "aws_iam_user_policy_attachment" "developer_kubernetesuser" {
@@ -109,13 +48,13 @@ resource "aws_iam_user_policy_attachment" "developer_deployer" {
   policy_arn = aws_iam_policy.deployer.arn
 }
 
-resource "aws_iam_user_policy_attachment" "developer_serverless_deployer" {
+resource "aws_iam_user_policy_attachment" "developer_serverlessdeployer" {
   count      = length(local.developers)
   user       = regex("[^/]*$", local.developers[count.index])
-  policy_arn = aws_iam_policy.serverless_deployer.arn
+  policy_arn = aws_iam_policy.serverlessdeployer.arn
 }
 
-resource "aws_iam_user_policy_attachment" "developer_devopssecretwriter" {
+resource "aws_iam_user_policy_attachment" "developer_devopssecretreader" {
   count      = length(local.developers)
   user       = regex("[^/]*$", local.developers[count.index])
   policy_arn = aws_iam_policy.devopssecretwriter.arn

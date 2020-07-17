@@ -38,7 +38,7 @@ EOF
 }
 
 resource "aws_iam_policy" "kubernetesuser" {
-  name        = "${var.name}-kubernetes-user"
+  name        = "${var.name}-kubernetesuser"
 
   policy = <<EOF
 {
@@ -88,12 +88,12 @@ data "aws_iam_policy_document" "deployer" {
   }
 }
 
-resource "aws_iam_policy" "serverless_deployer" {
-  name   = "${var.name}-serverless-deployer"
-  policy = "${data.aws_iam_policy_document.serverless_deployer.json}"
+resource "aws_iam_policy" "serverlessdeployer" {
+  name   = "${var.name}-serverlessdeployer"
+  policy = "${data.aws_iam_policy_document.serverlessdeployer.json}"
 }
 
-data "aws_iam_policy_document" "serverless_deployer" {
+data "aws_iam_policy_document" "serverlessdeployer" {
   statement {
     actions = [
       "eks:DescribeCluster",
@@ -130,24 +130,6 @@ data "aws_iam_policy_document" "serverless_deployer" {
     resources = [
       "arn:aws:s3:::${var.projects_bucket}",
       "arn:aws:s3:::${var.projects_bucket}/*",
-      "arn:aws:s3:::${var.public_bucket}",
-      "arn:aws:s3:::${var.public_bucket}/*"
-    ]
-  }
-}
-
-resource "aws_iam_policy" "assetsreader" {
-  name   = "${var.name}-assetsreader"
-  policy = "${data.aws_iam_policy_document.assetsreader.json}"
-}
-
-data "aws_iam_policy_document" "assetsreader" {
-  statement {
-    actions = [
-      "s3:GetObject"
-    ]
-
-    resources = [
       "arn:aws:s3:::${var.public_bucket}",
       "arn:aws:s3:::${var.public_bucket}/*"
     ]
