@@ -37,7 +37,7 @@ module "notify_slack_builds" {
   lambda_function_name = "${var.name}-builds"
   slack_webhook_url    = var.messaging_webhook
   slack_channel        = var.messaging_builds_channel
-  slack_username       = "${var.name} uptime check"
+  slack_username       = "${var.name} CI/CD"
 
   tags = local.tags
 }
