@@ -15,9 +15,8 @@
  */
 
 module "ssm-bastion" {
-  # source            = "JamesWoolfenden/ssm-bastion/aws"
-  # version           = "0.1.10"
-  source            = "git::https://github.com/TaitoUnited/terraform-aws-ssm-bastion.git"
+  source            = "JamesWoolfenden/ssm-bastion/aws"
+  version           = "0.1.20"
   allowed_cidrs     = local.authorizedNetworkCIDRs
   common_tags       = local.tags
   vpc_id            = module.network.vpc_id
