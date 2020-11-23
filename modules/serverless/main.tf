@@ -30,23 +30,23 @@ locals {
   }
 
   authorizedNetworkCIDRs = [
-    for net in try(var.variables.authorizedNetworks, []):
+    for net in try(var.resources.authorizedNetworks, []):
     net.cidr
   ]
 
   developers = try(
-    var.variables.developers != null ? var.variables.developers : [], []
+    var.resources.developers != null ? var.resources.developers : [], []
   )
 
   postgresClusters = try(
-    var.variables.postgresClusters != null
-    ? var.variables.postgresClusters
+    var.resources.postgresClusters != null
+    ? var.resources.postgresClusters
     : [],
     []
   )
   mysqlClusters = try(
-    var.variables.mysqlClusters != null
-    ? var.variables.mysqlClusters
+    var.resources.mysqlClusters != null
+    ? var.resources.mysqlClusters
     : [],
     []
   )
